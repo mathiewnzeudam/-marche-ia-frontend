@@ -154,42 +154,90 @@ export default function Navbar() {
 
         @media (max-width: 900px) {
           .nav-links-desktop { display: none !important; }
-          .hamburger { display: flex !important; }
+          .hamburger {
+            display: flex !important;
+            width: 40px; height: 40px;
+            align-items: center; justify-content: center;
+          }
           .mobile-menu {
             display: flex;
             flex-direction: column;
             background: #fff;
             border-top: 1px solid #eef;
-            padding: 8px 0 16px;
+            padding: 6px 0 20px;
             animation: slideDown .2s ease;
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
           }
-          .mobile-menu .nav-link { padding: 12px 24px; border-bottom: 1px solid #f5f7fb; }
+          .mobile-menu .nav-link { padding: 14px 24px; border-bottom: 1px solid #f5f7fb; font-size: 14px; }
+          .mobile-menu-auth {
+            display: flex; flex-direction: column; gap: 10px;
+            padding: 16px 24px 4px;
+            margin-top: 6px;
+            border-top: 1px solid #eef;
+          }
+          .mobile-menu-auth .btn-login,
+          .mobile-menu-auth .btn-espace,
+          .mobile-menu-auth .btn-outline {
+            justify-content: center; width: 100%; padding: 12px 18px; font-size: 14px;
+          }
         }
         @media (min-width: 901px) {
           .mobile-menu { display: none !important; }
         }
+        .btn-outline {
+          background: #fff;
+          color: #1B3A6B;
+          border: 1.5px solid #dde3f0;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: border-color .2s, background .2s;
+        }
+        .btn-outline:hover { border-color: #1B3A6B; background: #f8faff; }
+
+        .desktop-auth { display: flex; align-items: center; gap: 10px; }
+        @media (max-width: 640px) {
+          .desktop-auth { display: none !important; }
+          .navbar-brandSub { display: none !important; }
+        }
+
+        /* ── Topbar institutionnelle : simplifiée sur mobile ── */
+        @media (max-width: 900px) {
+          .topbar-center, .topbar-right { display: none !important; }
+          .topbar { justify-content: center !important; padding: 7px 16px !important; }
+        }
+        @media (max-width: 420px) {
+          .topbar-text-sub { display: none !important; }
+        }
       `}</style>
 
       {/* ── Topbar institutionnelle ── */}
-      <div style={s.topbar}>
+      <div style={s.topbar} className="topbar">
         <div style={s.tbLeft}>
           <CoatOfArms size={28} />
           <div style={{ lineHeight: 1.3 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#1B3A6B' }}>RÉPUBLIQUE DU CAMEROUN</div>
-            <div style={{ fontSize: 9.5, color: '#7a8499', letterSpacing: 0.3 }}>Paix – Travail – Patrie</div>
+            <div className="topbar-text-sub" style={{ fontSize: 9.5, color: '#7a8499', letterSpacing: 0.3 }}>Paix – Travail – Patrie</div>
           </div>
-          <div style={s.divider} />
+          <div style={s.divider} className="topbar-text-sub" />
           <CamFlag width={32} height={21} />
         </div>
 
-        <div style={s.tbCenter}>
+        <div style={s.tbCenter} className="topbar-center">
           <div style={s.armpBadge}><CheckCircle2 size={11} style={{ marginRight: 3, verticalAlign: '-2px' }} />ARMP</div>
           <span style={{ fontSize: 10.5, color: '#5a6478' }}>
             Plateforme agréée par l'Agence de Régulation des Marchés Publics
           </span>
         </div>
 
-        <div style={s.tbRight}>
+        <div style={s.tbRight} className="topbar-right">
           <a href="https://armp.cm" target="_blank" rel="noreferrer" className="topbar-link">armp.cm</a>
           <div style={s.divider} />
           <span style={{ fontSize: 11, color: '#5a6478', display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -210,7 +258,7 @@ export default function Navbar() {
               <span style={{ color: '#CE1126' }}>-</span>
               <span style={{ color: '#1B3A6B' }}>TAM</span>
             </div>
-            <div style={s.brandSub}>Plateforme des Marchés Publics</div>
+            <div className="navbar-brandSub" style={s.brandSub}>Plateforme des Marchés Publics</div>
           </div>
         </Link>
 
@@ -227,25 +275,27 @@ export default function Navbar() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {user ? (
-            <>
-              <Link to="/dashboard" className="btn-espace">
-                <User size={14} /> {user.full_name?.split(' ')[0] || 'Mon espace'}
-              </Link>
-              <button className="btn-login" onClick={() => { logout(); navigate('/'); }}>
-                Déconnexion
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/inscription" style={{ fontSize: 13, color: '#1B3A6B', fontWeight: 600, textDecoration: 'none' }}>
-                Créer un compte
-              </Link>
-              <Link to="/connexion" className="btn-login">
-                <Lock size={14} /> Se connecter
-              </Link>
-            </>
-          )}
+          <div className="desktop-auth">
+            {user ? (
+              <>
+                <Link to="/dashboard" className="btn-espace">
+                  <User size={14} /> {user.full_name?.split(' ')[0] || 'Mon espace'}
+                </Link>
+                <button className="btn-login" onClick={() => { logout(); navigate('/'); }}>
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/inscription" style={{ fontSize: 13, color: '#1B3A6B', fontWeight: 600, textDecoration: 'none' }}>
+                  Créer un compte
+                </Link>
+                <Link to="/connexion" className="btn-login">
+                  <Lock size={14} /> Se connecter
+                </Link>
+              </>
+            )}
+          </div>
           <button className="hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menu">
             <span style={menuOpen ? { transform: 'rotate(45deg) translate(5px,5px)' } : {}} />
             <span style={menuOpen ? { opacity: 0 } : {}} />
@@ -262,7 +312,27 @@ export default function Navbar() {
               {l.icon && <l.icon size={14} style={{ marginRight: 4 }} />}{l.label}
             </Link>
           ))}
-          {!user && <Link to="/connexion" className="nav-link">Se connecter</Link>}
+          <div className="mobile-menu-auth">
+            {user ? (
+              <>
+                <Link to="/dashboard" className="btn-espace">
+                  <User size={14} /> {user.full_name?.split(' ')[0] || 'Mon espace'}
+                </Link>
+                <button className="btn-login" onClick={() => { logout(); navigate('/'); }}>
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/connexion" className="btn-login">
+                  <Lock size={14} /> Se connecter
+                </Link>
+                <Link to="/inscription" className="btn-outline">
+                  Créer un compte
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
     </>
