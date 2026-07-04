@@ -129,7 +129,7 @@ export default function Dashboard() {
   const awardRate = stats?.stats?.total_tenders ? Math.round((stats.stats.awarded_tenders / stats.stats.total_tenders) * 100) : 0;
 
   return (
-    <div style={s.root}>
+    <div style={s.root} className="dash-root">
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
         @keyframes spin   { to { transform: rotate(360deg); } }
@@ -151,11 +151,26 @@ export default function Dashboard() {
         .doc-row { background: #fff; border: 1.5px solid #e8eef8; border-radius: 10px; padding: 13px 16px; display: flex; align-items: center; gap: 14px; transition: all .18s; cursor: pointer; }
         .doc-row:hover { border-color: #1B3A6B; box-shadow: 0 3px 12px rgba(27,58,107,0.08); }
         .activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        @media (max-width: 900px) {
+          .dash-root { flex-direction: column !important; }
+          .dash-sidebar { width: 100% !important; position: static !important; height: auto !important; top: auto !important; flex-direction: row !important; flex-wrap: nowrap !important; overflow-x: auto !important; padding: 10px 12px !important; align-items: center !important; }
+          .dash-sidebar .sideProfile-hide { display: none !important; }
+          .dash-sidebar .sideDivider-hide { display: none !important; }
+          .dash-side-nav { flex-direction: row !important; gap: 4px !important; overflow-x: auto !important; }
+          .dash-nav-item { white-space: nowrap !important; padding: 8px 12px !important; }
+          .dash-main { padding: 18px 14px !important; }
+          .dash-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .dash-two-col { grid-template-columns: 1fr !important; }
+          .dash-form-row3 { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .dash-stats-grid { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside style={s.sidebar}>
-        <div style={s.sideProfile}>
+      <aside style={s.sidebar} className="dash-sidebar">
+        <div style={s.sideProfile} className="sideProfile-hide">
           <div style={s.avatar}>{initials}</div>
           <div style={s.sideProfileInfo}>
             <div style={s.sideProfileName}>{user.full_name || 'Utilisateur'}</div>
@@ -164,15 +179,15 @@ export default function Dashboard() {
         </div>
 
         {/* Badge rôle */}
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 4px' }}>
+        <div className="sideProfile-hide" style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 4px' }}>
           <span style={{ background: '#f0f4ff', color: '#1B3A6B', fontSize: 10, fontWeight: 700, borderRadius: 20, padding: '3px 12px', letterSpacing: 0.4, textTransform: 'uppercase' }}>
             {user.role === 'enterprise' ? <><Building2 size={11} style={{ verticalAlign: 'middle', marginRight: 4 }} />Entreprise</> : user.role === 'authority' ? <><Landmark size={11} style={{ verticalAlign: 'middle', marginRight: 4 }} />Autorité</> : <><User size={11} style={{ verticalAlign: 'middle', marginRight: 4 }} />Citoyen</>}
           </span>
         </div>
 
-        <div style={s.sideDivider} />
+        <div style={s.sideDivider} className="sideDivider-hide" />
 
-        <nav style={s.sideNav}>
+        <nav style={s.sideNav} className="dash-side-nav">
           {NAV.map(item => (
             <button key={item.id} className={`dash-nav-item${active === item.id ? ' active' : ''}`}
               onClick={() => setActive(item.id)}>
@@ -192,15 +207,15 @@ export default function Dashboard() {
           ))}
         </nav>
 
-        <div style={s.sideDivider} />
+        <div style={s.sideDivider} className="sideDivider-hide" />
 
-        <div style={s.sideNav}>
+        <div style={s.sideNav} className="sideProfile-hide">
           <button className="dash-nav-item" onClick={() => navigate('/marches')}><span className="nav-icon"><ClipboardList size={16} /></span> Marchés</button>
           <button className="dash-nav-item" onClick={() => navigate('/chat')}><span className="nav-icon"><Bot size={16} /></span> Assistant IA</button>
           <button className="dash-nav-item" onClick={() => navigate('/transparence')}><span className="nav-icon"><BarChart3 size={16} /></span> Transparence</button>
         </div>
 
-        <div style={{ marginTop: 'auto', paddingTop: 16 }}>
+        <div className="sideProfile-hide" style={{ marginTop: 'auto', paddingTop: 16 }}>
           <button className="dash-nav-item" style={{ color: '#CE1126' }}
             onClick={() => { logout(); navigate('/'); }}>
             <span className="nav-icon">⎋</span> Déconnexion
@@ -209,7 +224,7 @@ export default function Dashboard() {
       </aside>
 
       {/* ═══ CONTENU ═══ */}
-      <main style={s.main}>
+      <main style={s.main} className="dash-main">
 
         {/* Message de bienvenue post-inscription */}
         {welcomeMsg && (
@@ -225,7 +240,7 @@ export default function Dashboard() {
             <PageHeader title={<>Bonjour, {firstName} <Hand size={20} style={{ verticalAlign: 'middle' }} /></>} sub="Voici votre espace marchés publics personnalisé" />
 
             {/* 4 KPIs */}
-            <div style={s.statsGrid}>
+            <div style={s.statsGrid} className="dash-stats-grid">
               {[
                 { icon: <ClipboardList size={20} />, label: 'Total marchés',     value: stats?.stats?.total_tenders,     color: '#1B3A6B', sub: 'Base ARMP' },
                 { icon: <CircleDot size={20} />, label: 'Marchés ouverts',   value: stats?.stats?.open_tenders,      color: '#007A5E', sub: `Taux ${openRate}%` },
@@ -263,7 +278,7 @@ export default function Dashboard() {
             )}
 
             {/* 2 colonnes */}
-            <div style={s.twoCol}>
+            <div style={s.twoCol} className="dash-two-col">
               {/* Accès rapide */}
               <div style={s.panel}>
                 <SectionTitle>Accès rapide</SectionTitle>
@@ -313,7 +328,7 @@ export default function Dashboard() {
             </div>
 
             {/* Répartition secteurs + alertes actives */}
-            <div style={{ ...s.twoCol, marginTop: 20 }}>
+            <div style={{ ...s.twoCol, marginTop: 20 }} className="dash-two-col">
               <div style={s.panel}>
                 <SectionTitle>Répartition par secteur</SectionTitle>
                 {stats?.by_sector?.length > 0 ? (
@@ -596,7 +611,7 @@ function AlertsTab({ alerts, setAlerts, loading }) {
           <SectionTitle>Créer une alerte</SectionTitle>
           {error && <div style={s.formError}>{error}</div>}
           <form onSubmit={save}>
-            <div style={s.formRow3}>
+            <div style={s.formRow3} className="dash-form-row3">
               <div style={s.formGroup}>
                 <label style={s.formLabel}>Mots-clés</label>
                 <input className="form-input" value={form.keywords} onChange={e => setForm(f => ({ ...f, keywords: e.target.value }))}
@@ -824,7 +839,7 @@ function ProfileTab({ user }) {
         </div>
       </div>
 
-      <div style={s.twoCol}>
+      <div style={s.twoCol} className="dash-two-col">
         <div style={s.panel}>
           <SectionTitle>Informations personnelles</SectionTitle>
           {msg && <div style={s.successMsg}><CheckCircle2 size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />{msg}</div>}

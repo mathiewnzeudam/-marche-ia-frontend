@@ -259,11 +259,25 @@ export default function Marches() {
         .sector-pill:hover:not(.active) { border-color: #1B3A6B; color: #1B3A6B; }
         .list-card { display: flex; gap: 16px; align-items: flex-start; background: #fff; border-radius: 10px; padding: 16px 20px; border: 1.5px solid #e8eef8; cursor: pointer; transition: box-shadow .2s, transform .2s; }
         .list-card:hover { box-shadow: 0 4px 16px rgba(27,58,107,0.1); transform: translateX(3px); }
+
+        @media (max-width: 768px) {
+          .marches-header { padding: 24px 16px 0 !important; }
+          .marches-header-inner { flex-direction: column !important; align-items: stretch !important; }
+          .marches-header-stats { justify-content: space-between !important; }
+          .marches-body { flex-direction: column !important; padding: 20px 16px !important; gap: 16px !important; }
+          .marches-sidebar { width: 100% !important; }
+          .marches-toolbar { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+          .marches-toolbar-controls { justify-content: space-between !important; flex-wrap: wrap !important; }
+          .marches-grid { grid-template-columns: 1fr !important; }
+          .list-card { flex-direction: column !important; align-items: stretch !important; }
+          .list-card > div:last-child { text-align: left !important; margin-top: 10px; }
+          .list-card > div:last-child > div:last-child { justify-content: flex-start !important; }
+        }
       `}</style>
 
       {/* ── En-tête ── */}
-      <div style={s.header} className="animate-fadeIn">
-        <div style={s.headerInner}>
+      <div style={s.header} className="animate-fadeIn marches-header">
+        <div style={s.headerInner} className="marches-header-inner">
           <div>
             <div style={s.headerBreadcrumb}>
               <Link to="/" style={{ color: 'rgba(255,255,255,0.65)', textDecoration: 'none', fontSize: 13 }}>Accueil</Link>
@@ -276,7 +290,7 @@ export default function Marches() {
             </p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
-            <div style={s.headerStats}>
+            <div style={s.headerStats} className="marches-header-stats">
               {[
                 { label: 'Ouverts', val: tenders.filter(t => t.status === 'open').length, color: '#4ade80' },
                 { label: 'Cette page', val: tenders.length, color: '#FCD116' },
@@ -311,9 +325,9 @@ export default function Marches() {
       </div>
 
       {/* ── Corps ── */}
-      <div style={s.body}>
+      <div style={s.body} className="marches-body">
         {/* ── Sidebar filtres ── */}
-        <aside style={s.sidebar} className="animate-slideLeft">
+        <aside style={s.sidebar} className="animate-slideLeft marches-sidebar">
           <div style={s.sideCard}>
             <div style={s.sideHead}>
               <h3 style={s.sideTitle}>
@@ -416,7 +430,7 @@ export default function Marches() {
         {/* ── Contenu principal ── */}
         <main style={s.main}>
           {/* Barre d'actions */}
-          <div style={s.toolbar}>
+          <div style={s.toolbar} className="marches-toolbar">
             <span style={s.toolbarCount}>
               {loading ? '…' : (
                 <>
@@ -432,7 +446,7 @@ export default function Marches() {
                 </>
               )}
             </span>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }} className="marches-toolbar-controls">
               <select value={sort} onChange={e => { setSort(e.target.value); setPage(1); }}
                 style={{ border: '1.5px solid #dde3f0', borderRadius: 7, padding: '6px 10px', fontSize: 12, cursor: 'pointer', background: '#fff', color: '#1B3A6B', fontWeight: 600 }}
                 className="filter-input">
@@ -445,7 +459,7 @@ export default function Marches() {
 
           {/* Grille / Liste */}
           {loading ? (
-            <div style={s.grid}>
+            <div style={s.grid} className="marches-grid">
               {Array.from({length: 6}).map((_,i) => <SkeletonCard key={i} />)}
             </div>
           ) : tenders.length === 0 ? (
@@ -456,7 +470,7 @@ export default function Marches() {
               {hasFilters && <button onClick={reset} style={s.resetBtn} className="btn-hover">Effacer les filtres</button>}
             </div>
           ) : view === 'grid' ? (
-            <div style={s.grid} className="animate-slideUp">
+            <div style={s.grid} className="animate-slideUp marches-grid">
               {tenders.map(t => (
                 <TenderCard key={t.id} tender={t} onClick={() => navigate(`/marches/${t.id}`)} />
               ))}

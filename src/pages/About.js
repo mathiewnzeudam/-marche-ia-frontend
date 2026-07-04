@@ -137,10 +137,26 @@ export default function About() {
         .tech-pill { display: inline-flex; align-items: center; background: #f0f4ff; color: #1B3A6B; border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; margin: 3px; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none} }
         .tab-content { animation: fadeIn .25s ease; }
+
+        @media (max-width: 768px) {
+          .about-grid2 { grid-template-columns: 1fr !important; }
+          .about-team-grid { grid-template-columns: 1fr !important; }
+          .about-thanks-grid { grid-template-columns: 1fr !important; }
+          .about-hero { padding: 40px 16px 32px !important; }
+          .about-container { padding: 24px 12px 48px !important; }
+          .about-card { padding: 18px 16px !important; }
+          .about-stat-item { padding: 14px 16px !important; }
+          .about-legal-icon { width: 40px !important; height: 40px !important; }
+        }
+        @media (max-width: 480px) {
+          .about-stats-band { justify-content: flex-start !important; overflow-x: auto !important; }
+          .about-context-row { flex-direction: column !important; gap: 2px !important; }
+          .about-context-label { width: auto !important; }
+        }
       `}</style>
 
       {/* ── Hero ── */}
-      <div style={s.hero}>
+      <div className="about-hero" style={s.hero}>
         <div style={s.heroInner}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
             <CamFlag w={42} h={28} />
@@ -167,7 +183,7 @@ export default function About() {
       </div>
 
       {/* ── Bandeau stats ── */}
-      <div style={s.statsBand}>
+      <div className="about-stats-band" style={s.statsBand}>
         {[
           { val: '2 400+', lbl: 'Marchés indexés', icon: ClipboardList },
           { val: '10',     lbl: 'Régions couvertes', icon: Map },
@@ -175,7 +191,7 @@ export default function About() {
           { val: '100%',   lbl: 'Source officielle ARMP', icon: CheckCircle2 },
           { val: 'Gratuit', lbl: 'Accès citoyen', icon: Gift },
         ].map(({ val, lbl, icon: Icon }) => (
-          <div key={lbl} style={s.statItem}>
+          <div key={lbl} className="about-stat-item" style={s.statItem}>
             <span style={s.statIcon}><Icon size={20} /></span>
             <span style={s.statVal}>{val}</span>
             <span style={s.statLbl}>{lbl}</span>
@@ -183,7 +199,7 @@ export default function About() {
         ))}
       </div>
 
-      <div style={s.container}>
+      <div className="about-container" style={s.container}>
 
         {/* ── Onglets ── */}
         <div style={s.tabs}>
@@ -199,8 +215,8 @@ export default function About() {
         {/* ════ LE PROJET ════ */}
         {tab === 'projet' && (
           <div className="tab-content">
-            <div style={s.grid2}>
-              <div style={s.card}>
+            <div className="about-grid2" style={s.grid2}>
+              <div className="about-card" style={s.card}>
                 <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><Target size={18} />Objectifs du projet</h2>
                 <p style={s.cardText}>
                   Marché-IA Cameroun est un projet de fin d'études DUT Informatique visant à améliorer
@@ -226,7 +242,7 @@ export default function About() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <div style={s.card}>
+                <div className="about-card" style={s.card}>
                   <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><HardHat size={18} />Architecture technique</h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                     {TECH_STACK.map(({ cat, items }) => (
@@ -240,7 +256,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div style={{ ...s.card, background: 'linear-gradient(135deg, #1B3A6B, #2a5298)', color: '#fff' }}>
+                <div className="about-card" style={{ ...s.card, background: 'linear-gradient(135deg, #1B3A6B, #2a5298)', color: '#fff' }}>
                   <h2 style={{ ...s.cardTitle, color: '#FCD116', display: 'flex', alignItems: 'center', gap: 8 }}><Calendar size={18} />Contexte académique</h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {[
@@ -249,8 +265,8 @@ export default function About() {
                       { lbl: 'Année universitaire', val: '2025 – 2026' },
                       { lbl: 'Type de projet', val: 'Projet de fin d\'études (PFE)' },
                     ].map(({ lbl, val }) => (
-                      <div key={lbl} style={{ display: 'flex', gap: 12 }}>
-                        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', width: 140, flexShrink: 0 }}>{lbl}</span>
+                      <div key={lbl} className="about-context-row" style={{ display: 'flex', gap: 12 }}>
+                        <span className="about-context-label" style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', width: 140, flexShrink: 0 }}>{lbl}</span>
                         <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{val}</span>
                       </div>
                     ))}
@@ -260,7 +276,7 @@ export default function About() {
             </div>
 
             {/* FAQ */}
-            <div style={{ ...s.card, marginTop: 20 }}>
+            <div className="about-card" style={{ ...s.card, marginTop: 20 }}>
               <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><HelpCircle size={18} />Questions fréquentes</h2>
               {FAQ.map((item, i) => (
                 <div key={i} className="faq-item">
@@ -278,9 +294,9 @@ export default function About() {
         {/* ════ ÉQUIPE ════ */}
         {tab === 'equipe' && (
           <div className="tab-content">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 20, marginBottom: 24 }}>
+            <div className="about-team-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 20, marginBottom: 24 }}>
               {TEAM.map((m, i) => (
-                <div key={i} style={{ ...s.card, borderTop: `4px solid ${m.color}` }}>
+                <div key={i} className="about-card" style={{ ...s.card, borderTop: `4px solid ${m.color}` }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
                     <div style={{ width: 52, height: 52, borderRadius: 14, background: m.color + '18', color: m.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <m.icon size={26} />
@@ -303,12 +319,12 @@ export default function About() {
               ))}
             </div>
 
-            <div style={{ ...s.card, background: '#f8fafc' }}>
+            <div className="about-card" style={{ ...s.card, background: '#f8fafc' }}>
               <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><HeartHandshake size={18} />Remerciements</h2>
               <p style={{ fontSize: 13, color: '#666', lineHeight: 1.8, marginBottom: 16 }}>
                 Nous remercions chaleureusement toutes les personnes qui ont contribué à ce projet :
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 12 }}>
+              <div className="about-thanks-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 12 }}>
                 {[
                   { who: 'L\'ARMP du Cameroun', why: 'Pour la mise à disposition des données publiques sur armp.cm' },
                   { who: 'L\'IUT de Douala', why: 'Pour l\'encadrement académique et les ressources pédagogiques' },
@@ -328,7 +344,7 @@ export default function About() {
         {/* ════ BASE LÉGALE ════ */}
         {tab === 'legal' && (
           <div className="tab-content">
-            <div style={{ ...s.card, marginBottom: 20, background: '#fff8f0', border: '1.5px solid #fde68a' }}>
+            <div className="about-card" style={{ ...s.card, marginBottom: 20, background: '#fff8f0', border: '1.5px solid #fde68a' }}>
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 <span style={{ flexShrink: 0 }}><AlertTriangle size={24} /></span>
                 <div>
@@ -345,9 +361,9 @@ export default function About() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {LEGAL_ARTICLES.map((art, i) => (
-                <div key={i} style={s.card}>
+                <div key={i} className="about-card" style={s.card}>
                   <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-                    <div style={{ width: 48, height: 48, borderRadius: 12, background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Scale size={22} /></div>
+                    <div className="about-legal-icon" style={{ width: 48, height: 48, borderRadius: 12, background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Scale size={22} /></div>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 6 }}>
                         <span style={{ background: '#1B3A6B', color: '#fff', borderRadius: 6, padding: '3px 10px', fontSize: 11, fontWeight: 700 }}>{art.ref}</span>
@@ -361,7 +377,7 @@ export default function About() {
               ))}
             </div>
 
-            <div style={{ ...s.card, marginTop: 20, background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', border: '1.5px solid #86efac' }}>
+            <div className="about-card" style={{ ...s.card, marginTop: 20, background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', border: '1.5px solid #86efac' }}>
               <h2 style={{ ...s.cardTitle, color: '#166534', display: 'flex', alignItems: 'center', gap: 8 }}><ClipboardList size={18} />Conditions d'utilisation</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {[
@@ -385,7 +401,7 @@ export default function About() {
         {/* ════ CONFIDENTIALITÉ ════ */}
         {tab === 'confidential' && (
           <div className="tab-content">
-            <div style={s.card}>
+            <div className="about-card" style={s.card}>
               <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><Lock size={18} />Politique de confidentialité</h2>
               <p style={{ fontSize: 13, color: '#888', marginBottom: 24 }}>Dernière mise à jour : Juin 2026</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -437,8 +453,8 @@ export default function About() {
         {/* ════ CONTACT ════ */}
         {tab === 'contact' && (
           <div className="tab-content">
-            <div style={s.grid2}>
-              <div style={s.card}>
+            <div className="about-grid2" style={s.grid2}>
+              <div className="about-card" style={s.card}>
                 <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><Mail size={18} />Nous contacter</h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                   {[
@@ -463,7 +479,7 @@ export default function About() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <div style={{ ...s.card, background: 'linear-gradient(135deg, #1B3A6B, #0d2247)', color: '#fff' }}>
+                <div className="about-card" style={{ ...s.card, background: 'linear-gradient(135deg, #1B3A6B, #0d2247)', color: '#fff' }}>
                   <h2 style={{ ...s.cardTitle, color: '#FCD116', display: 'flex', alignItems: 'center', gap: 8 }}><Rocket size={18} />Contribuer au projet</h2>
                   <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: 16 }}>
                     Ce projet est académique et open-source. Si vous souhaitez contribuer, signaler un bug ou proposer une amélioration, vous êtes les bienvenus.
@@ -481,7 +497,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div style={s.card}>
+                <div className="about-card" style={s.card}>
                   <h2 style={{ ...s.cardTitle, display: 'flex', alignItems: 'center', gap: 8 }}><Landmark size={18} />Contacts ARMP officiels</h2>
                   <div style={{ fontSize: 12, color: '#555', lineHeight: 2 }}>
                     <strong style={{ color: '#1B3A6B' }}>Siège ARMP Yaoundé</strong><br />

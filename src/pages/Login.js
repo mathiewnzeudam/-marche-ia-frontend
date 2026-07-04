@@ -95,10 +95,20 @@ export default function Login() {
         .auth-btn:disabled { opacity: .65; cursor: not-allowed; }
         .demo-btn { transition: all .15s; }
         .demo-btn:hover { background: #f0f4ff !important; border-color: #1B3A6B !important; }
+
+        @media (max-width: 768px) {
+          .login-left-panel { display: none !important; }
+          .login-right-panel { flex: 1 1 100% !important; padding: 24px 16px !important; }
+          .login-card { padding: 28px 20px !important; max-width: 100% !important; }
+          .login-mobile-logo { display: flex !important; }
+        }
+        @media (max-width: 380px) {
+          .login-card { padding: 22px 14px !important; }
+        }
       `}</style>
 
       {/* Panneau gauche décoratif */}
-      <div style={s.leftPanel}>
+      <div className="login-left-panel" style={s.leftPanel}>
         <div style={s.leftContent}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}>
             <CamFlag />
@@ -135,10 +145,10 @@ export default function Login() {
       </div>
 
       {/* Panneau droit — formulaire */}
-      <div style={s.rightPanel}>
-        <div style={s.card}>
+      <div className="login-right-panel" style={s.rightPanel}>
+        <div className="login-card" style={s.card}>
           {/* Logo mobile */}
-          <div style={s.mobileLogo}>
+          <div className="login-mobile-logo" style={s.mobileLogo}>
             <CamFlag />
             <span style={{ fontWeight: 800, color: '#1B3A6B', fontSize: 14 }}>Marché-IA Cameroun</span>
           </div>
@@ -243,7 +253,6 @@ const s = {
   },
   mobileLogo: {
     display: 'none',
-    '@media (max-width:768px)': { display: 'flex' },
     alignItems: 'center', gap: 10, marginBottom: 28,
   },
   title: { fontSize: 26, fontWeight: 800, color: '#1B3A6B', marginBottom: 6 },

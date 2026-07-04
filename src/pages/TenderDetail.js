@@ -137,9 +137,19 @@ export default function TenderDetail() {
         .info-tab.active { color: #1B3A6B; border-bottom-color: #CE1126; }
         .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; text-decoration: none; border: none; }
         .action-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+        @media (max-width: 768px) {
+          .td-container { padding: 18px 14px !important; }
+          .td-body { grid-template-columns: 1fr !important; }
+          .td-sidebar { width: 100% !important; }
+          .td-hero-content { padding: 24px 18px !important; }
+          .td-hero-meta { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+          .td-amount-card { position: static !important; margin: 16px 18px 0 !important; text-align: left !important; }
+          .td-doctype-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
       `}</style>
 
-      <div style={s.container}>
+      <div style={s.container} className="td-container">
         {/* ── Fil d'Ariane ── */}
         <div style={s.breadcrumb}>
           <button onClick={() => navigate('/')} style={s.breadLink}>Accueil</button>
@@ -152,7 +162,7 @@ export default function TenderDetail() {
         {/* ── Hero card ── */}
         <div style={s.heroCard}>
           <div style={s.heroBg} />
-          <div style={s.heroContent}>
+          <div style={s.heroContent} className="td-hero-content">
             <div style={s.heroTop}>
               <span style={{ ...s.statusBadge, background: st.bg, color: st.color, border: `1.5px solid ${st.color}33` }}>
                 <span style={{ ...s.statusDot, background: st.color }} />
@@ -168,7 +178,7 @@ export default function TenderDetail() {
 
             <h1 style={s.heroTitle}>{tender.title}</h1>
 
-            <div style={s.heroMeta}>
+            <div style={s.heroMeta} className="td-hero-meta">
               {tender.authority && (
                 <span style={s.heroMetaItem}><Landmark size={13} /> {tender.authority}</span>
               )}
@@ -195,7 +205,7 @@ export default function TenderDetail() {
 
           {/* KPI flottant */}
           {amount && (
-            <div style={s.amountCard}>
+            <div style={s.amountCard} className="td-amount-card">
               <div style={s.amountLabel}>Montant estimé</div>
               <div style={s.amountValue}>{amount}</div>
             </div>
@@ -203,7 +213,7 @@ export default function TenderDetail() {
         </div>
 
         {/* ── Corps ── */}
-        <div style={s.body}>
+        <div style={s.body} className="td-body">
           {/* Colonne principale */}
           <div style={s.main}>
             {/* Infos clés */}
@@ -246,7 +256,7 @@ export default function TenderDetail() {
           </div>
 
           {/* Sidebar */}
-          <aside style={s.sidebar}>
+          <aside style={s.sidebar} className="td-sidebar">
             {/* Documents ARMP */}
             <div style={s.sideCard}>
               <h3 style={s.sideTitle}><Download size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} /> Documents officiels</h3>
@@ -391,7 +401,7 @@ function DocModal({ tender, onClose, onSelect }) {
             {tender.authority}
           </span>
         </div>
-        <div style={s.docTypeGrid}>
+        <div style={s.docTypeGrid} className="td-doctype-grid">
           {DOC_TYPES.map(dt => (
             <button key={dt.type} style={s.docTypeBtn} onClick={() => onSelect(dt.type)}>
               <span style={{ fontSize: 26, marginBottom: 6, display: 'block' }}><dt.icon size={26} /></span>

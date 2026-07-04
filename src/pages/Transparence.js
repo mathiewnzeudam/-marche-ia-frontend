@@ -392,10 +392,23 @@ export default function Transparence() {
           body { background: #fff !important; }
           .animate-slideUp, .animate-fadeIn { animation: none !important; opacity: 1 !important; }
         }
+
+        @media (max-width: 768px) {
+          .transp-hero { padding: 40px 16px 32px !important; }
+          .transp-container { padding: 24px 12px 48px !important; }
+          .transp-grid2 { grid-template-columns: 1fr !important; }
+          .transp-kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .transp-amount-banner { flex-direction: column !important; }
+          .transp-amount-divider { width: 100% !important; height: 1px !important; }
+          .transp-hero-links { flex-direction: column !important; align-items: stretch !important; }
+          .transp-hero-links a, .transp-hero-links button { text-align: center !important; justify-content: center !important; }
+          .transp-tabs { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+          .transp-tabs button { flex-shrink: 0; }
+        }
       `}</style>
 
       {/* ── Hero ── */}
-      <div style={s.hero}>
+      <div style={s.hero} className="transp-hero">
         <div style={s.heroInner}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
             <CamFlag w={40} h={27} />
@@ -405,7 +418,7 @@ export default function Transparence() {
           <p style={s.heroSub}>
             Statistiques publiques des marchés publics camerounais — mise à jour automatique depuis <strong>armp.cm</strong>
           </p>
-          <div style={s.heroLinks}>
+          <div style={s.heroLinks} className="transp-hero-links">
             <Link to="/marches" style={s.heroBtn}>Consulter les marchés <ArrowRight size={14} style={{ verticalAlign: 'middle' }} /></Link>
             <a href="https://armp.cm" target="_blank" rel="noreferrer" style={s.heroBtnOutline}>Site ARMP <ArrowUpRight size={14} style={{ verticalAlign: 'middle' }} /></a>
             {!loading && !error && data && (
@@ -422,17 +435,17 @@ export default function Transparence() {
         </div>
       </div>
 
-      <div style={s.container}>
+      <div style={s.container} className="transp-container">
 
         {/* ── KPIs ── */}
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 16, marginBottom: 32 }}>
+          <div className="transp-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 16, marginBottom: 32 }}>
             {[...Array(5)].map((_, i) => <SkeletonBox key={i} h={110} />)}
           </div>
         ) : error ? (
           <div style={s.errorBox}>{error}</div>
         ) : (
-          <div style={s.kpiGrid}>
+          <div style={s.kpiGrid} className="transp-kpi-grid">
             <KpiCard icon={<ClipboardList size={20} />} value={stats.total_tenders} label="Total marchés" color="#1B3A6B" delay={0} />
             <KpiCard icon={<CircleDot size={20} />} value={stats.open_tenders} label="Marchés ouverts" sub={`Taux : ${openRate}%`} color="#007A5E" delay={0.05} />
             <KpiCard icon={<CheckCircle2 size={20} />} value={stats.awarded_tenders} label="Marchés attribués" sub={`Taux : ${awardRate}%`} color="#2E86AB" delay={0.1} />
@@ -443,17 +456,17 @@ export default function Transparence() {
 
         {/* ── Montants ── */}
         {!loading && !error && stats && (
-          <div style={s.amountBanner} className="animate-fadeIn">
+          <div style={s.amountBanner} className="animate-fadeIn transp-amount-banner">
             <div style={s.amountItem}>
               <span style={s.amountVal}>{fmtAmount(stats.total_amount_fcfa)}</span>
               <span style={s.amountLbl}>Volume total engagé</span>
             </div>
-            <div style={s.amountDivider} />
+            <div style={s.amountDivider} className="transp-amount-divider" />
             <div style={s.amountItem}>
               <span style={s.amountVal}>{fmtAmount(stats.avg_amount_fcfa)}</span>
               <span style={s.amountLbl}>Montant moyen par marché</span>
             </div>
-            <div style={s.amountDivider} />
+            <div style={s.amountDivider} className="transp-amount-divider" />
             <div style={s.amountItem}>
               <span style={s.amountVal}>{stats.open_tenders?.toLocaleString('fr-FR') || '—'}</span>
               <span style={s.amountLbl}>Marchés ouverts actuellement</span>
@@ -464,7 +477,7 @@ export default function Transparence() {
         {/* ── Onglets ── */}
         {!loading && !error && (
           <>
-            <div style={s.tabs}>
+            <div style={s.tabs} className="transp-tabs">
               {tabs.map(t => (
                 <button key={t.id} onClick={() => setActiveTab(t.id)}
                   style={{ ...s.tab, ...(activeTab === t.id ? s.tabActive : {}) }}>
@@ -495,7 +508,7 @@ export default function Transparence() {
                     </div>
                   ))}
                 </div>
-                <div style={s.grid2}>
+                <div style={s.grid2} className="transp-grid2">
                   <Section title="Répartition par statut" icon={<BarChart3 size={18} />}>
                     <PieChart data={[
                       { label: 'Ouverts', value: stats?.open_tenders || 0 },
@@ -549,7 +562,7 @@ export default function Transparence() {
                     <Download size={14} /> Export CSV
                   </button>
                 </div>
-                <div style={s.grid2}>
+                <div style={s.grid2} className="transp-grid2">
                   <Section title="Volume par secteur" icon={<HardHat size={18} />}>
                     <BarChart data={bySector} colorFn={sectorColors} />
                   </Section>

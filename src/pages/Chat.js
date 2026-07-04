@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   ClipboardList, FolderOpen, Scale, Coins, BookOpen, ThumbsUp, ThumbsDown,
   Bot, Lightbulb, Clock, MessageCircle, Trash2, Sparkles, Zap,
-  Lock, ArrowUp,
+  Lock, ArrowUp, Menu, X as CloseIcon,
 } from 'lucide-react';
 
 /* ══════════════════════════════════════════════
@@ -198,6 +198,7 @@ export default function Chat() {
   const [history, setHistory]         = useState([]);
   const [histLoading, setHistLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const bottomRef = useRef();
   const inputRef  = useRef();
@@ -250,6 +251,7 @@ export default function Chat() {
     ]);
     setShowSugg(false);
     setShowHistory(false);
+    setMobileSidebarOpen(false);
   };
 
   /* Envoyer un message */
@@ -292,7 +294,7 @@ export default function Chat() {
   const activeSugg = SUGGESTION_GROUPS[activeGroup];
 
   return (
-    <div style={st.page}>
+    <div style={st.page} className="chat-page">
       <style>{`
         @keyframes blink { 0%,80%,100%{opacity:0}40%{opacity:1} }
         @keyframes fadeIn { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none} }
@@ -315,10 +317,27 @@ export default function Chat() {
         ::-webkit-scrollbar{width:5px;height:5px}
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:#dde3f0;border-radius:3px}
+        .chat-mobile-toggle{display:none}
+        .chat-overlay{display:none}
+        @media (max-width: 768px) {
+          .chat-page{ position: relative; overflow: hidden !important; }
+          .chat-sidebar{ position: fixed !important; left: 0; top: 0; bottom: 0; z-index: 40; height: 100% !important; transform: translateX(-100%); transition: transform .25s ease; width: 82vw !important; max-width: 300px; }
+          .chat-sidebar.open{ transform: translateX(0); }
+          .chat-mobile-toggle{ display: inline-flex !important; }
+          .chat-overlay.open{ display: block !important; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 30; }
+          .chat-user-bubble{ max-width: 85% !important; }
+          .chat-bot-bubble{ max-width: 88% !important; }
+          .chat-header-badge{ display: none !important; }
+          .chat-messages{ padding: 16px 12px !important; }
+          .chat-input-wrap{ padding: 10px 12px !important; }
+        }
       `}</style>
 
+      {/* Overlay mobile */}
+      <div className={`chat-overlay${mobileSidebarOpen ? ' open' : ''}`} onClick={() => setMobileSidebarOpen(false)} />
+
       {/* ═══════════ SIDEBAR ═══════════ */}
-      <aside style={st.sidebar}>
+      <aside style={st.sidebar} className={`chat-sidebar${mobileSidebarOpen ? ' open' : ''}`}>
         {/* Avatar + badge */}
         <div style={st.sideTop}>
           <div style={st.sideAvatar}><Bot size={20} /></div>
@@ -412,15 +431,22 @@ export default function Chat() {
       <div style={st.chatWrap}>
         {/* En-tête */}
         <div style={st.chatHeader}>
-          <div>
-            <h2 style={st.chatTitle}>Chat IA — Marchés Publics</h2>
-            <span style={st.chatMeta}>
-              {msgCount === 0 ? 'Démarrez une conversation' : `${msgCount} question${msgCount > 1 ? 's' : ''}`}
-              {convId && <span style={{ color: '#007A5E', marginLeft: 8, fontWeight: 700 }}>· Conversation active</span>}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button className="chat-mobile-toggle" onClick={() => setMobileSidebarOpen(v => !v)}
+              style={{ background: 'none', border: '1.5px solid #dde3f0', borderRadius: 8, padding: 6, cursor: 'pointer', color: '#1B3A6B', alignItems: 'center', justifyContent: 'center' }}
+              title="Menu">
+              {mobileSidebarOpen ? <CloseIcon size={16} /> : <Menu size={16} />}
+            </button>
+            <div>
+              <h2 style={st.chatTitle}>Chat IA — Marchés Publics</h2>
+              <span style={st.chatMeta}>
+                {msgCount === 0 ? 'Démarrez une conversation' : `${msgCount} question${msgCount > 1 ? 's' : ''}`}
+                {convId && <span style={{ color: '#007A5E', marginLeft: 8, fontWeight: 700 }}>· Conversation active</span>}
+              </span>
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={st.chatBadge}><Bot size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />Llama 3.3 · Base ARMP</span>
+            <span className="chat-header-badge" style={st.chatBadge}><Bot size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />Llama 3.3 · Base ARMP</span>
             {msgCount > 0 && (
               <button onClick={startNew} title="Nouvelle conversation"
                 style={{ background: 'none', border: '1.5px solid #dde3f0', borderRadius: 8, padding: '5px 10px', cursor: 'pointer', fontSize: 12, color: '#666' }}>
@@ -431,12 +457,12 @@ export default function Chat() {
         </div>
 
         {/* Messages */}
-        <div style={st.messages}>
+        <div style={st.messages} className="chat-messages">
           {messages.map((m, i) => (
             <div key={i} className="msg-wrap">
               {m.role === 'user' ? (
                 <div style={st.userRow}>
-                  <div style={st.userBubble}>
+                  <div style={st.userBubble} className="chat-user-bubble">
                     <Markdown text={m.content} />
                   </div>
                   <div style={st.userAvatar}>{(user?.full_name || 'U')[0].toUpperCase()}</div>
@@ -444,7 +470,7 @@ export default function Chat() {
               ) : (
                 <div style={st.botRow}>
                   <div style={st.botAvatar}>IA</div>
-                  <div style={st.botBubble}>
+                  <div style={st.botBubble} className="chat-bot-bubble">
                     <Markdown text={m.content} />
                     <SourcesPanel sources={m.sources} />
                     {m.messageId && (
@@ -501,7 +527,7 @@ export default function Chat() {
         </div>
 
         {/* Zone de saisie */}
-        <div style={st.inputWrap}>
+        <div style={st.inputWrap} className="chat-input-wrap">
           {!user && (
             <div style={st.loginBanner}>
               <Lock size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} /> <strong>Connectez-vous</strong> pour utiliser l'assistant IA —{' '}

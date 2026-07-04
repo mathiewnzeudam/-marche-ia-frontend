@@ -37,7 +37,7 @@ const REGIONS = ['Adamaoua','Centre','Est','Extrême-Nord','Littoral','Nord','No
 function Steps({ current }) {
   const steps = ['Type', 'Détails', 'Preuves', 'Confirmation'];
   return (
-    <div style={s.steps}>
+    <div style={s.steps} className="recl-steps">
       {steps.map((st, i) => (
         <React.Fragment key={i}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
@@ -159,8 +159,22 @@ export default function Reclamations() {
 
   return (
     <div style={s.page}>
+      <style>{`
+        @media (max-width: 768px) {
+          .recl-hero { padding: 32px 16px 28px !important; }
+          .recl-container { padding: 20px 12px 48px !important; }
+          .recl-layout { flex-direction: column !important; }
+          .recl-sidebar { width: 100% !important; }
+          .recl-steps { flex-wrap: nowrap !important; overflow-x: auto !important; }
+          .recl-steps > div:first-child span { display: none; }
+          .recl-type-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .recl-row2 { grid-template-columns: 1fr !important; }
+          .recl-btn-row { flex-direction: column-reverse !important; }
+          .recl-btn-row button, .recl-btn-row a { width: 100% !important; text-align: center; }
+        }
+      `}</style>
       {/* ── Hero ── */}
-      <div style={s.hero}>
+      <div style={s.hero} className="recl-hero">
         <div style={s.heroInner}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
             <CamFlag w={36} h={24} />
@@ -174,11 +188,11 @@ export default function Reclamations() {
         </div>
       </div>
 
-      <div style={s.container}>
-        <div style={s.layout}>
+      <div style={s.container} className="recl-container">
+        <div style={s.layout} className="recl-layout">
 
           {/* ── Formulaire principal ── */}
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <Steps current={step} />
 
             {error && <div style={s.errorBox}>{error}</div>}
@@ -187,7 +201,7 @@ export default function Reclamations() {
             {step === 0 && (
               <div className="animate-fadeIn">
                 <h3 style={s.stepTitle}>Quel type d'irrégularité souhaitez-vous signaler ?</h3>
-                <div style={s.typeGrid}>
+                <div style={s.typeGrid} className="recl-type-grid">
                   {TYPES.map(t => (
                     <button key={t.id} onClick={() => set('type', t.id)}
                       style={{ ...s.typeCard, ...(form.type === t.id ? s.typeCardActive : {}) }}>
@@ -209,7 +223,7 @@ export default function Reclamations() {
               <div className="animate-fadeIn">
                 <h3 style={s.stepTitle}>Détails de l'irrégularité</h3>
                 <div style={s.form}>
-                  <div style={s.row2}>
+                  <div style={s.row2} className="recl-row2">
                     <div style={s.field}>
                       <label style={s.label}>Référence du marché <span style={{ color: '#CE1126' }}>*</span></label>
                       <input style={s.input} placeholder="Ex: AO/123/MINTP/2026"
@@ -221,7 +235,7 @@ export default function Reclamations() {
                         value={form.autorite} onChange={e => set('autorite', e.target.value)} />
                     </div>
                   </div>
-                  <div style={s.row2}>
+                  <div style={s.row2} className="recl-row2">
                     <div style={s.field}>
                       <label style={s.label}>Région</label>
                       <select style={s.input} value={form.region} onChange={e => set('region', e.target.value)}>
@@ -256,7 +270,7 @@ export default function Reclamations() {
                     </label>
                   </div>
                 </div>
-                <div style={s.btnRow}>
+                <div style={s.btnRow} className="recl-btn-row">
                   <button onClick={() => setStep(0)} style={s.btnSecondary}><ArrowLeft size={14} style={{ verticalAlign: 'middle' }} /> Retour</button>
                   <button onClick={() => form.reference_marche && form.autorite && form.description.length >= 30 && setStep(2)}
                     disabled={!form.reference_marche || !form.autorite || form.description.length < 30}
@@ -281,7 +295,7 @@ export default function Reclamations() {
                 </div>
                 {!form.anonyme && (
                   <div style={s.form}>
-                    <div style={s.row2}>
+                    <div style={s.row2} className="recl-row2">
                       <div style={s.field}>
                         <label style={s.label}>Nom complet <span style={{ color: '#CE1126' }}>*</span></label>
                         <input style={s.input} placeholder="Nom et prénom"
@@ -293,7 +307,7 @@ export default function Reclamations() {
                           value={form.email_reclamant} onChange={e => set('email_reclamant', e.target.value)} />
                       </div>
                     </div>
-                    <div style={s.row2}>
+                    <div style={s.row2} className="recl-row2">
                       <div style={s.field}>
                         <label style={s.label}>Téléphone</label>
                         <input style={s.input} placeholder="+237 6XX XXX XXX"
@@ -311,7 +325,7 @@ export default function Reclamations() {
                   <span><Lock size={14} /></span>
                   <span>Vos données sont traitées conformément à la loi n°2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité au Cameroun.</span>
                 </div>
-                <div style={s.btnRow}>
+                <div style={s.btnRow} className="recl-btn-row">
                   <button onClick={() => setStep(1)} style={s.btnSecondary}><ArrowLeft size={14} style={{ verticalAlign: 'middle' }} /> Retour</button>
                   <button onClick={() => (form.anonyme || (form.nom_reclamant && form.email_reclamant)) && setStep(3)}
                     disabled={!form.anonyme && (!form.nom_reclamant || !form.email_reclamant)}
@@ -346,7 +360,7 @@ export default function Reclamations() {
                   </label>
                 </div>
                 {error && <div style={s.errorBox}>{error}</div>}
-                <div style={s.btnRow}>
+                <div style={s.btnRow} className="recl-btn-row">
                   <button onClick={() => setStep(2)} style={s.btnSecondary}><ArrowLeft size={14} style={{ verticalAlign: 'middle' }} /> Retour</button>
                   <button onClick={handleSubmit} disabled={loading || !form.accepte_cgu}
                     style={{ ...s.btnDanger, opacity: (!loading && form.accepte_cgu) ? 1 : 0.5, display: 'inline-flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
@@ -358,7 +372,7 @@ export default function Reclamations() {
           </div>
 
           {/* ── Sidebar info ── */}
-          <div style={s.sidebar}>
+          <div style={s.sidebar} className="recl-sidebar">
             <div style={s.sideCard}>
               <h4 style={s.sideTitle}><Scale size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} /> Base légale</h4>
               <div style={s.legalItem}>

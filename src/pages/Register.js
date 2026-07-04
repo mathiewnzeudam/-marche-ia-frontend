@@ -195,10 +195,22 @@ export default function Register() {
         .role-card:hover { border-color: #1B3A6B !important; }
         .sec-pill { transition: all .15s; cursor: pointer; }
         .sec-pill:hover { border-color: #1B3A6B !important; }
+
+        @media (max-width: 768px) {
+          .register-left-panel { display: none !important; }
+          .register-right-panel { flex: 1 1 100% !important; padding: 24px 16px !important; }
+          .register-card { padding: 26px 18px !important; max-width: 100% !important; }
+          .summary-label { width: 70px !important; }
+        }
+        @media (max-width: 380px) {
+          .register-card { padding: 20px 14px !important; }
+          .summary-row { flex-wrap: wrap !important; }
+          .summary-label { width: 100% !important; }
+        }
       `}</style>
 
       {/* Panneau gauche */}
-      <div style={s.leftPanel}>
+      <div className="register-left-panel" style={s.leftPanel}>
         <div style={s.leftContent}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 36 }}>
             <CamFlag />
@@ -233,8 +245,8 @@ export default function Register() {
       </div>
 
       {/* Panneau droit */}
-      <div style={s.rightPanel}>
-        <div style={s.card}>
+      <div className="register-right-panel" style={s.rightPanel}>
+        <div className="register-card" style={s.card}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
             <h2 style={s.title}>Créer un compte</h2>
           </div>
@@ -358,10 +370,10 @@ export default function Register() {
                       form.sectors.length > 0 && { icon: FolderOpen, label: 'Secteurs', val: form.sectors.join(', ') },
                       form.phone && { icon: Smartphone, label: 'Téléphone', val: form.phone },
                     ].filter(Boolean).map(({ icon: Icon, label, val }) => (
-                      <div key={label} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <div key={label} className="summary-row" style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                         <span style={{ flexShrink: 0 }}><Icon size={15} /></span>
-                        <span style={{ fontSize: 12, color: '#888', width: 90, flexShrink: 0 }}>{label}</span>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: '#333', flex: 1 }}>{val}</span>
+                        <span className="summary-label" style={{ fontSize: 12, color: '#888', width: 90, flexShrink: 0 }}>{label}</span>
+                        <span style={{ fontSize: 12, fontWeight: 600, color: '#333', flex: 1, wordBreak: 'break-word' }}>{val}</span>
                       </div>
                     ))}
                   </div>

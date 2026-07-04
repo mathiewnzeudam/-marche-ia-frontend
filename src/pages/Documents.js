@@ -72,7 +72,7 @@ export default function Documents() {
   if (!user) return null;
 
   return (
-    <div style={s.page}>
+    <div style={s.page} className="doc-page">
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .doc-type-card { background: #fff; border: 2px solid #e8eef8; border-radius: 14px; padding: 22px; cursor: pointer; transition: all .2s; text-align: left; }
@@ -83,6 +83,17 @@ export default function Documents() {
         .tab-btn.active { color: #1B3A6B; border-bottom-color: #CE1126; }
         .form-input:focus { border-color: #1B3A6B !important; box-shadow: 0 0 0 3px rgba(27,58,107,0.09); outline: none; }
         .content-area { white-space: pre-wrap; font-size: 14px; line-height: 1.8; color: #334155; font-family: 'Georgia', serif; }
+
+        @media (max-width: 768px) {
+          .doc-page { padding: 18px 14px !important; }
+          .doc-types-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+          .doc-two-col { grid-template-columns: 1fr !important; }
+          .doc-detail-grid { grid-template-columns: 1fr !important; }
+          .doc-form-row2, .doc-form-row3 { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .doc-types-grid { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       <div style={s.container}>
@@ -103,7 +114,7 @@ export default function Documents() {
 
             {/* Types de documents */}
             <h2 style={s.sectionTitle}>Types de documents disponibles</h2>
-            <div style={s.typesGrid}>
+            <div style={s.typesGrid} className="doc-types-grid">
               {DOC_TYPES.map(dt => (
                 <button key={dt.type} className="doc-type-card"
                   style={{ borderTopColor: dt.color }}
@@ -242,7 +253,7 @@ function GenerateForm({ selectedType, prefill, onBack, onGenerated }) {
         </div>
       </div>
 
-      <div style={s.twoCol}>
+      <div style={s.twoCol} className="doc-two-col">
         {/* Formulaire */}
         <div style={s.panel}>
           {prefill && (
@@ -273,7 +284,7 @@ function GenerateForm({ selectedType, prefill, onBack, onGenerated }) {
             <div style={s.divider} />
             <div style={s.subsectionLabel}>Informations du marché</div>
 
-            <div style={s.formRow2}>
+            <div style={s.formRow2} className="doc-form-row2">
               <div style={s.formGroup}>
                 <label style={s.formLabel}>Référence du marché</label>
                 <input className="form-input" value={form.tender_reference} onChange={e => set('tender_reference', e.target.value)} placeholder="AO/XXXXX/2026" style={s.formInput} />
@@ -287,7 +298,7 @@ function GenerateForm({ selectedType, prefill, onBack, onGenerated }) {
             <div style={s.divider} />
             <div style={s.subsectionLabel}>Informations de l'entreprise <span style={{ color: '#CE1126' }}>*</span></div>
 
-            <div style={s.formRow2}>
+            <div style={s.formRow2} className="doc-form-row2">
               <div style={s.formGroup}>
                 <label style={s.formLabel}>Nom de l'entreprise *</label>
                 <input className="form-input" value={form.company_name} onChange={e => set('company_name', e.target.value)} placeholder="SARL Mon Entreprise" style={s.formInput} required />
@@ -303,7 +314,7 @@ function GenerateForm({ selectedType, prefill, onBack, onGenerated }) {
               <input className="form-input" value={form.company_address} onChange={e => set('company_address', e.target.value)} placeholder="BP 1234, Yaoundé, Cameroun" style={s.formInput} />
             </div>
 
-            <div style={s.formRow2}>
+            <div style={s.formRow2} className="doc-form-row2">
               <div style={s.formGroup}>
                 <label style={s.formLabel}>Représentant légal *</label>
                 <input className="form-input" value={form.representative} onChange={e => set('representative', e.target.value)} placeholder="M. Jean Dupont, DG" style={s.formInput} required />
@@ -324,7 +335,7 @@ function GenerateForm({ selectedType, prefill, onBack, onGenerated }) {
             {needsAmount && (
               <>
                 <div style={s.subsectionLabel}>Détails financiers</div>
-                <div style={s.formRow3}>
+                <div style={s.formRow3} className="doc-form-row3">
                   <div style={s.formGroup}>
                     <label style={s.formLabel}>Montant proposé (FCFA)</label>
                     <input className="form-input" type="number" value={form.proposed_amount} onChange={e => set('proposed_amount', e.target.value)} placeholder="50000000" style={s.formInput} />
@@ -1120,7 +1131,7 @@ function DocumentDetail({ doc, onBack, onUpdate }) {
       )}
 
       {/* ════ CORPS 2 COLONNES ════ */}
-      <div style={{ ...s.detailGrid, gridTemplateColumns: fillMode ? '1fr 320px' : '1fr 280px' }}>
+      <div style={{ ...s.detailGrid, gridTemplateColumns: fillMode ? '1fr 320px' : '1fr 280px' }} className="doc-detail-grid">
 
         {/* ── Zone document ── */}
         <div style={s.docCard}>

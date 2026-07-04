@@ -101,6 +101,19 @@ export default function Footer() {
           margin-top: 12px;
         }
         .signal-btn:hover { background: #FCD116; transform: translateY(-1px); }
+        @media (max-width: 768px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 28px !important;
+            padding: 28px 20px 22px !important;
+          }
+          .footer-bottom {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            text-align: left !important;
+            padding: 14px 20px !important;
+          }
+        }
       `}</style>
 
       {/* Bande tricolore décorative */}
@@ -110,7 +123,7 @@ export default function Footer() {
         <div style={{ flex: 1, background: '#FCD116' }} />
       </div>
 
-      <div style={s.inner}>
+      <div style={s.inner} className="footer-grid">
         {/* Col Brand */}
         <div style={s.brandCol}>
           <div style={s.brandRow}>
@@ -165,7 +178,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={s.bottom}>
+      <div style={s.bottom} className="footer-bottom">
         <div style={s.bottomLeft}>
           <CamFlag width={22} height={15} />
           <span style={s.bottomTxt}>République du Cameroun — Paix · Travail · Patrie</span>

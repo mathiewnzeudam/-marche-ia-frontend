@@ -223,6 +223,21 @@ export default function Home() {
         @keyframes shimmer { 0%{background-position:200% 0}100%{background-position:-200% 0} }
         .urgent-ticker { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
         .urgent-ticker::-webkit-scrollbar { display: none; }
+        @media (max-width: 768px) {
+          .hero-content { padding: 40px 16px !important; }
+          .search-bar { flex-direction: column !important; border-radius: 10px !important; }
+          .search-bar input { width: 100% !important; padding: 12px 14px !important; }
+          .search-bar button { width: 100% !important; padding: 12px !important; }
+          .ai-banner { grid-template-columns: 1fr !important; padding: 32px 20px !important; gap: 28px !important; }
+          .urgent-header { flex-wrap: wrap !important; gap: 8px !important; }
+          .action-banner { grid-template-columns: 1fr !important; }
+          .action-card { border-right: none !important; border-bottom: 1px solid #f0f4ff !important; }
+          .cards-grid { grid-template-columns: 1fr !important; }
+          .steps-grid { grid-template-columns: 1fr !important; }
+          .stats-band { grid-template-columns: repeat(2, 1fr) !important; }
+          .badges-bar { justify-content: flex-start !important; }
+          .badge-item { padding: 14px 16px !important; flex: 1 1 45% !important; border-right: none !important; }
+        }
       `}</style>
 
       {/* ══ HERO ══ */}
@@ -249,7 +264,7 @@ export default function Home() {
           <circle cx="100" cy="300" r="90"  fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="1" />
         </svg>
 
-        <div style={s.heroContent} className="animate-fadeIn">
+        <div style={s.heroContent} className="animate-fadeIn hero-content">
           <h1 style={s.heroH1} className="animate-slideUp delay-1">
             Trouvez et remportez<br />
             <span style={{ color: '#FCD116' }}>des marchés publics</span><br />
@@ -257,7 +272,7 @@ export default function Home() {
           </h1>
 
           {/* Barre de recherche */}
-          <form onSubmit={handleSearch} style={s.searchBar} className="animate-slideUp delay-3">
+          <form onSubmit={handleSearch} style={s.searchBar} className="animate-slideUp delay-3 search-bar">
             <span style={{ padding: '0 14px', fontSize: 16, display: 'flex', alignItems: 'center' }}><Search size={16} /></span>
             <input style={s.searchInput} type="text" placeholder="Rechercher un marché, une autorité, un secteur..."
               value={search} onChange={e => setSearch(e.target.value)} />
@@ -296,7 +311,7 @@ export default function Home() {
       </div>
 
       {/* ══ BANDEAU STATS LIVE ══ */}
-      <div ref={statsRef} style={s.statsBand}>
+      <div ref={statsRef} style={s.statsBand} className="stats-band">
         {STAT_ITEMS.map((st, i) => (
           <div key={i} style={{ ...s.statItem, borderRight: i < STAT_ITEMS.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
             <div style={{ marginBottom: 4, color: st.color }}><st.icon size={22} /></div>
@@ -323,7 +338,7 @@ export default function Home() {
       {/* ══ MARCHÉS URGENTS (clôture < 14 jours) ══ */}
       {urgentTenders.length > 0 && (
         <div style={s.urgentSection}>
-          <div style={s.urgentHeader}>
+          <div style={s.urgentHeader} className="urgent-header">
             <span style={s.urgentPill}><AlertTriangle size={13} style={{ marginRight: 4, verticalAlign: '-2px' }} />Clôture imminente</span>
             <button style={s.urgentMoreBtn} onClick={() => navigate('/marches?status=open')}>
               Voir tous les ouverts <ArrowRight size={13} style={{ verticalAlign: '-2px' }} />
@@ -353,7 +368,7 @@ export default function Home() {
       {/* ══ MARCHÉS RÉCENTS ══ */}
       <SectionWrap title="Derniers appels d'offres ouverts" action="Tous les marchés" onAction={() => navigate('/marches')}>
         {loadingTenders ? (
-          <div style={s.cardsGrid}>{[1,2,3,4,5,6].map(i => <SkeletonCard key={i} />)}</div>
+          <div style={s.cardsGrid} className="cards-grid">{[1,2,3,4,5,6].map(i => <SkeletonCard key={i} />)}</div>
         ) : tenders.length === 0 ? (
           <div style={s.emptyState}>
             <div style={{ marginBottom: 16 }}><Inbox size={48} /></div>
@@ -362,7 +377,7 @@ export default function Home() {
             <button style={s.ctaPrimary} className="btn-hover" onClick={() => navigate('/chat')}>Poser une question à l'IA</button>
           </div>
         ) : (
-          <div style={s.cardsGrid}>
+          <div style={s.cardsGrid} className="cards-grid">
             {tenders.map(t => (
               <TenderCard key={t.id} tender={t} onClick={() => navigate(`/marches/${t.id}`)} />
             ))}
@@ -377,7 +392,7 @@ export default function Home() {
           <h2 style={s.sectionTitle}>Comment ça marche ?</h2>
           <p style={{ fontSize: 14, color: '#666' }}>En 3 étapes simples, accédez aux marchés publics camerounais</p>
         </div>
-        <div style={s.stepsGrid}>
+        <div style={s.stepsGrid} className="steps-grid">
           {[
             { num: '01', icon: Search, title: 'Recherchez un marché', desc: "Utilisez nos filtres avancés — région, secteur, budget, statut — pour trouver les appels d'offres qui correspondent à votre activité.", color: '#1B3A6B', delay: 0 },
             { num: '02', icon: Bot, title: 'Analysez avec l\'IA', desc: "Notre assistant IA spécialisé vous aide à comprendre les exigences, préparer vos documents et évaluer vos chances de succès.", color: '#007A5E', delay: 0.15 },
@@ -390,7 +405,7 @@ export default function Home() {
       <AiBanner navigate={navigate} />
 
       {/* ══ BANNIÈRE TRANSPARENCE + RÉCLAMATIONS ══ */}
-      <div style={s.actionBanner}>
+      <div style={s.actionBanner} className="action-banner">
         <ActionCard
           icon={BarChart3}
           color="#1B3A6B"
@@ -421,7 +436,7 @@ export default function Home() {
       </div>
 
       {/* ══ LABELS / PARTENAIRES ══ */}
-      <div style={s.badgesBar}>
+      <div style={s.badgesBar} className="badges-bar">
         {[
           { icon: Landmark, label: 'ARMP Cameroun',     sub: 'Données officielles' },
           { icon: Lock, label: 'Données sécurisées', sub: 'Chiffrement SSL' },
@@ -429,7 +444,7 @@ export default function Home() {
           { icon: Bot, label: 'IA intégrée',         sub: 'Powered by Claude AI' },
           { icon: '🇨🇲', label: 'Made in Cameroun',   sub: 'Plateforme nationale' },
         ].map(b => (
-          <div key={b.label} style={s.badgeItem}>
+          <div key={b.label} style={s.badgeItem} className="badge-item">
             <span style={{ fontSize: 22, display: 'flex', alignItems: 'center' }}>{typeof b.icon === 'string' ? b.icon : <b.icon size={20} />}</span>
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: '#1B3A6B' }}>{b.label}</div>
@@ -461,7 +476,7 @@ function SectionWrap({ title, action, onAction, children }) {
 function ActionCard({ icon: Icon, color, title, desc, cta, link, navigate }) {
   const [ref, visible] = useInView();
   return (
-    <div ref={ref} style={{ ...s.actionCard, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(20px)', transition: 'opacity .5s ease, transform .5s ease', borderTop: `4px solid ${color}` }} className="card-hover">
+    <div ref={ref} style={{ ...s.actionCard, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(20px)', transition: 'opacity .5s ease, transform .5s ease', borderTop: `4px solid ${color}` }} className="card-hover action-card">
       <div style={{ width: 48, height: 48, borderRadius: 12, background: color + '14', display: 'flex', alignItems: 'center', justifyContent: 'center', color, marginBottom: 14 }}>
         <Icon size={24} />
       </div>
@@ -478,7 +493,7 @@ function ActionCard({ icon: Icon, color, title, desc, cta, link, navigate }) {
 function AiBanner({ navigate }) {
   const [ref, visible] = useInView();
   return (
-    <div ref={ref} style={{ ...s.aiBanner, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(24px)', transition: 'opacity .6s ease, transform .6s ease' }}>
+    <div ref={ref} style={{ ...s.aiBanner, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(24px)', transition: 'opacity .6s ease, transform .6s ease' }} className="ai-banner">
       <div>
         <div style={s.aiPill}><Bot size={13} style={{ marginRight: 4, verticalAlign: '-2px' }} />Intelligence Artificielle</div>
         <h2 style={s.aiTitle}>Assistant IA spécialisé en marchés publics camerounais</h2>
