@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { BarChart3, AlertTriangle, CheckCircle2, User, Lock } from 'lucide-react';
-import armoiriesCameroun from '../assets/armoiries-cameroun.svg';
+
+const armoiriesCameroun = '/assets/armoiries-cameroun.svg';
 
 /* ── Drapeau camerounais officiel avec étoile dorée ── */
 function CamFlag({ width = 36, height = 24 }) {

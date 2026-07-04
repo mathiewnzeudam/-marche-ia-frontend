@@ -6,6 +6,7 @@ import {
   Landmark, MapPin, Clock, ArrowRight, CheckCircle2, Trophy, Map, Search,
   Bot, BarChart3, Coins, Upload, Inbox, Scale, FileText, Lock, Zap, BookOpen,
 } from 'lucide-react';
+import heroBgImage from '../assets/hero-bg.jpg';
 
 /* ── Drapeau ── */
 function CamFlag({ w = 32, h = 21 }) {
@@ -226,6 +227,7 @@ export default function Home() {
 
       {/* ══ HERO ══ */}
       <div style={s.hero}>
+        <div style={{ ...s.heroBgImage, backgroundImage: `url(${heroBgImage})` }} />
         <div style={s.heroBg} />
         <svg style={s.heroPattern} viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
           <defs>
@@ -248,21 +250,11 @@ export default function Home() {
         </svg>
 
         <div style={s.heroContent} className="animate-fadeIn">
-          <div style={s.heroBadge} className="animate-slideDown">
-            <CamFlag w={22} h={15} />
-            <span>République du Cameroun · Plateforme officielle ARMP</span>
-          </div>
-
           <h1 style={s.heroH1} className="animate-slideUp delay-1">
             Trouvez et remportez<br />
             <span style={{ color: '#FCD116' }}>des marchés publics</span><br />
             au Cameroun
           </h1>
-
-          <p style={s.heroSub} className="animate-slideUp delay-2">
-            Accédez aux appels d'offres officiels synchronisés depuis l'ARMP,<br />
-            analysez les opportunités et préparez vos dossiers avec l'IA.
-          </p>
 
           {/* Barre de recherche */}
           <form onSubmit={handleSearch} style={s.searchBar} className="animate-slideUp delay-3">
@@ -529,7 +521,8 @@ function AiBanner({ navigate }) {
 /* ════════════════ STYLES ════════════════ */
 const s = {
   hero: { position: 'relative', minHeight: 490, display: 'flex', alignItems: 'center', overflow: 'hidden' },
-  heroBg: { position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0f1e3d 0%, #1B3A6B 50%, #0d2a1a 100%)' },
+  heroBgImage: { position: 'absolute', inset: 0, backgroundSize: 'cover', backgroundPosition: 'center' },
+  heroBg: { position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(15,30,61,0.25) 0%, rgba(27,58,107,0.2) 50%, rgba(13,42,26,0.25) 100%)' },
   heroPattern: { position: 'absolute', inset: 0, width: '100%', height: '100%' },
   heroContent: { position: 'relative', zIndex: 1, width: '100%', maxWidth: 800, margin: '0 auto', padding: '60px 24px', textAlign: 'center', color: '#fff' },
   heroBadge: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 24, padding: '5px 14px', fontSize: 11, color: 'rgba(255,255,255,0.9)', marginBottom: 20 },

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, CheckCircle2 } from 'lucide-react';
 
+const armoiriesCameroun = '/assets/armoiries-cameroun.svg';
+
 function CamFlag({ width = 36, height = 24 }) {
   return (
     <svg width={width} height={height} viewBox="0 0 36 24" style={{ borderRadius: 2, flexShrink: 0 }}>
@@ -18,16 +20,8 @@ function CamFlag({ width = 36, height = 24 }) {
 
 function CoatOfArms({ size = 44 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" style={{ flexShrink: 0 }}>
-      <path d="M50 8 L88 22 L88 62 Q88 82 50 95 Q12 82 12 62 L12 22 Z" fill="#007A5E" />
-      <path d="M50 8 L88 22 L88 62 Q88 82 50 95 L50 8 Z" fill="#CE1126" />
-      <path d="M50 8 L56 8 L56 95 Q53 96 50 95 Q47 96 44 95 L44 8 Z" fill="#CE1126" />
-      <polygon points="50,30 52.4,37.4 60.1,37.4 53.9,42 56.2,49.4 50,44.9 43.8,49.4 46.1,42 39.9,37.4 47.6,37.4" fill="#FCD116" />
-      <polygon points="27,55 28.4,59.3 32.9,59.3 29.5,61.7 30.9,66 27,63.6 23.1,66 24.5,61.7 21.1,59.3 25.6,59.3" fill="#FCD116" />
-      <polygon points="73,55 74.4,59.3 78.9,59.3 75.5,61.7 76.9,66 73,63.6 69.1,66 70.5,61.7 67.1,59.3 71.6,59.3" fill="#FCD116" />
-      <path d="M17 72 Q50 85 83 72 L83 78 Q50 92 17 78 Z" fill="#FCD116" />
-      <path d="M50 8 L88 22 L88 62 Q88 82 50 95 Q12 82 12 62 L12 22 Z" fill="none" stroke="#8B6914" strokeWidth="1.5" />
-    </svg>
+    <img src={armoiriesCameroun} alt="Armoiries de la République du Cameroun" width={size} height={size}
+      style={{ flexShrink: 0, objectFit: 'contain' }} />
   );
 }
 

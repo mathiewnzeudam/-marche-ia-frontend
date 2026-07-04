@@ -123,12 +123,3 @@ button { font-family: inherit; }
 
 ::selection { background: #CE1126; color: #fff; }
 
-/* ═══════════════════════════════════
-   FOCUS ACCESSIBILITÉ
-═══════════════════════════════════ */
-
-:focus-visible {
-  outline: 2px solid #CE1126;
-  outline-offset: 3px;
-  border-radius: 4px;
-}
